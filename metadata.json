@@ -1,0 +1,7 @@
+{
+  "name": "Abhishek Placement & Career Counselling",
+  "description": "A professional platform for job seekers and students in India, offering placement services, career guidance, and interview preparation.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
