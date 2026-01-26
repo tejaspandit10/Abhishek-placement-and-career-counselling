@@ -10,7 +10,7 @@ import Contact from './pages/Contact';
 import AgentRegister from './pages/AgentRegister';
 import AdminDashboard from './pages/AdminDashboard';
 import Logo from './components/Logo';
-import BUSINESS_DETAILS from './constants';
+import { BUSINESS_DETAILS } from './constants';
 
 const AboutPage = () => (
   <div className="max-w-4xl mx-auto py-20 px-4">
