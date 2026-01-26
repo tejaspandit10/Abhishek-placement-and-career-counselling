@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import { Navbar } from './components/Navbar';
 import Home from './pages/Home';
 import ApplyForm from './pages/ApplyForm';
 import Payment from './pages/Payment';
