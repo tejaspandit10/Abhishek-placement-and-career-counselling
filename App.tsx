@@ -9,9 +9,8 @@ import Confirmation from './pages/Confirmation';
 import Contact from './pages/Contact';
 import AgentRegister from './pages/AgentRegister';
 import AdminDashboard from './pages/AdminDashboard';
-import Logo from './components/Logo';
+import { Logo } from './components/Logo';
 import { BUSINESS_DETAILS } from './constants';
-import { BUSINESS_DETAILS } from './constants.tsx';
 
 
 const AboutPage = () => (
