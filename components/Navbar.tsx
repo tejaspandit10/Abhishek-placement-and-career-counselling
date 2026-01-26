@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 
-const Navbar: React.FC = () => {
+export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  export const navLinks = [
+  const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/#services' },
