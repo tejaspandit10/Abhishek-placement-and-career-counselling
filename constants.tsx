@@ -11,7 +11,7 @@ export const BUSINESS_DETAILS = {
 };
 
 export const COLORS = {
-  primary: '#003366', 
+  primary: '#003366',
   secondary: '#00acc1', 
   accent: '#3b82f6', 
 };
