@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
+import  Navbar from './components/Navbar';
 import { Home } from './pages/Home';
 import { ApplyForm } from './pages/ApplyForm';
 import { Payment } from './pages/Payment';
@@ -9,7 +9,7 @@ import { Confirmation } from './pages/Confirmation';
 import { Contact } from './pages/Contact';
 import { AgentRegister } from './pages/AgentRegister';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { Logo } from './components/Logo';
+import  Logo  from './components/Logo';
 import { BUSINESS_DETAILS } from './constants';
 
 const AboutPage = () => (
