@@ -7,14 +7,11 @@ export const BUSINESS_DETAILS = {
   address: 'AT POST KOLWAN TALUKA MULSHI, DIST. PUNE – 412 108',
   phone1: '+91 73784 65008',
   phone2: '+91 97631 19323',
-  email: 'info@jobs-apcc.in',
-  description: `ABHISHEK PLACEMENT AND CAREER COUNSELLING (APCC) is a premium recruitment and career advisory firm based in Pune. We bridge the gap between ambitious job seekers and top-tier employers across various industries. Our platform provides a comprehensive ecosystem where students and professionals receive end-to-end support—from initial career mapping and skill assessment to resume optimization and final job placement. We specialize in identifying individual strengths and aligning them with the specific needs of modern corporations.`,
-  howWeHelp: `We help students by providing clarity in their career path through expert counselling sessions. For job seekers, we offer direct access to verified vacancies, professional interview preparation, and skill development programs. We act as a trusted partner for companies, providing them with a pre-screened pool of qualified and motivated candidates, thus reducing hiring friction.`,
-  vision: `Our vision is to become the leading catalyst for employability in India. We aim to empower 1 million professionals by 2030 by providing accessible, high-quality career guidance and placement support. We focus on long-term career growth rather than just temporary jobs, ensuring our candidates become valuable assets to the organizations they join.`
+  email: 'info@jobs-apcc.in'
 };
 
 export const COLORS = {
-  primary: '#003366', 
+  primary: '#003366',
   secondary: '#00acc1', 
   accent: '#3b82f6', 
 };
@@ -76,14 +73,6 @@ export const TESTIMONIALS = [
     content: 'The registration process was smooth, and I started receiving relevant job alerts almost immediately.',
     rating: 4,
     image: 'https://picsum.photos/100/100?random=3'
-  },
-  {
-    id: '4',
-    name: 'Sneha Kulkarni',
-    role: 'HR Professional',
-    content: 'APCC really cares about matching the right candidate to the right job. Truly life-changing experience.',
-    rating: 5,
-    image: 'https://picsum.photos/100/100?random=4'
   }
 ];
 
