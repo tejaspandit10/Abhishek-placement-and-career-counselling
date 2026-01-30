@@ -2,10 +2,16 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ApplicationFormData, EducationRow } from '../types';
+import { LegalModal } from '../components/LegalModal';
+import { TermsContent } from './Terms';
+import { PrivacyContent } from './Privacy';
 
 export const ApplyForm: React.FC = () => {
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  
   const [formData, setFormData] = useState<Partial<ApplicationFormData>>({
     education: [
       { qualification: '10th', passingYear: '', percentage: '', stream: '', collegeName: '' },
@@ -42,6 +48,10 @@ export const ApplyForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreedToTerms) {
+      alert("Please agree to the Terms & Conditions and No-Refund Policy before proceeding.");
+      return;
+    }
     localStorage.setItem('pending_application', JSON.stringify(formData));
     localStorage.setItem('payment_context', 'candidate');
     navigate('/payment');
@@ -142,15 +152,15 @@ export const ApplyForm: React.FC = () => {
               <div>
                 <label className={labelClass}>Gender (लिंग)*</label>
                 <div className="flex flex-col gap-2 mt-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-2 cursor-pointer text-black">
                     <input type="radio" required name="gender" value="male" onChange={handleInputChange} className="w-4 h-4 text-cyan-600" />
                     <span>पुरुष (Male)</span>
                   </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-2 cursor-pointer text-black">
                     <input type="radio" name="gender" value="female" onChange={handleInputChange} className="w-4 h-4 text-cyan-600" />
                     <span>स्त्री (Female)</span>
                   </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-2 cursor-pointer text-black">
                     <input type="radio" name="gender" value="other" onChange={handleInputChange} className="w-4 h-4 text-cyan-600" />
                     <span>इतर (Other)</span>
                   </label>
@@ -203,7 +213,7 @@ export const ApplyForm: React.FC = () => {
                 <label className={labelClass}>Preferred Job Sector (कोणत्या क्षेत्रात नोकरी हवी आहे?)*</label>
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   {sectors.map(sector => (
-                    <label key={sector} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded">
+                    <label key={sector} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded text-black">
                       <input 
                         type="checkbox" 
                         checked={formData.preferredSector?.includes(sector)} 
@@ -228,7 +238,7 @@ export const ApplyForm: React.FC = () => {
                 <label className={labelClass}>Preferred Job Type (नोकरीचा प्रकार)*</label>
                 <div className="grid grid-cols-2 gap-4 mt-2">
                   {['Full Time', 'Part Time', 'Internship', 'Work From Home'].map(type => (
-                    <label key={type} className="flex items-center gap-2 text-sm cursor-pointer">
+                    <label key={type} className="flex items-center gap-2 text-sm cursor-pointer text-black">
                       <input 
                         type="radio" 
                         required
@@ -278,11 +288,11 @@ export const ApplyForm: React.FC = () => {
             <div className="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200">
               <label className={`${labelClass} mb-4`}>Previous Work Experience (आधी काम केले आहे का?)*</label>
               <div className="flex gap-8 mb-6">
-                <label className="flex items-center gap-2 cursor-pointer font-bold">
+                <label className="flex items-center gap-2 cursor-pointer font-bold text-black">
                   <input type="radio" required name="hasPreviousExperience" value="yes" onChange={(e) => setFormData(prev => ({...prev, hasPreviousExperience: 'yes'}))} className="w-5 h-5 text-cyan-600" />
                   हो (Yes)
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer font-bold">
+                <label className="flex items-center gap-2 cursor-pointer font-bold text-black">
                   <input type="radio" name="hasPreviousExperience" value="no" defaultChecked onChange={(e) => setFormData(prev => ({...prev, hasPreviousExperience: 'no'}))} className="w-5 h-5 text-cyan-600" />
                   नाही (No)
                 </label>
@@ -335,6 +345,30 @@ export const ApplyForm: React.FC = () => {
             </div>
           </section>
 
+          <div className="bg-cyan-50 p-6 rounded-2xl border border-cyan-100">
+             <div className="flex items-start gap-3">
+               <input 
+                id="terms-check"
+                type="checkbox" 
+                required 
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="w-5 h-5 mt-1 text-cyan-600 rounded cursor-pointer"
+               />
+               <label htmlFor="terms-check" className="text-sm font-semibold text-[#003366] cursor-pointer">
+                 I agree to the <button 
+                   type="button"
+                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowTermsModal(true); }}
+                   className="underline hover:text-cyan-600 transition-colors"
+                 >Terms & Conditions</button>, <button 
+                   type="button"
+                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowPrivacyModal(true); }}
+                   className="underline hover:text-cyan-600 transition-colors"
+                 >Privacy Policy</button> and <span className="text-red-600">No-Refund Policy</span>.
+               </label>
+             </div>
+          </div>
+
           <div className="flex flex-col items-center gap-4 pt-8 border-t">
             <p className="text-xs text-slate-500 font-medium">Review all details carefully before proceeding.</p>
             <button type="submit" className="bg-cyan-600 hover:bg-cyan-700 text-white px-16 py-5 rounded-xl font-black text-xl shadow-2xl transition-all transform hover:scale-105 active:scale-95 shadow-cyan-900/20">
@@ -343,6 +377,23 @@ export const ApplyForm: React.FC = () => {
           </div>
         </form>
       </div>
+
+      {/* Legal Modals */}
+      <LegalModal 
+        isOpen={showTermsModal} 
+        onClose={() => setShowTermsModal(false)} 
+        title="Terms & Conditions"
+      >
+        <TermsContent />
+      </LegalModal>
+
+      <LegalModal 
+        isOpen={showPrivacyModal} 
+        onClose={() => setShowPrivacyModal(false)} 
+        title="Privacy Policy"
+      >
+        <PrivacyContent />
+      </LegalModal>
     </div>
   );
 };

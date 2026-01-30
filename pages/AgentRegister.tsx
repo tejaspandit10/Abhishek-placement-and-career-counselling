@@ -2,9 +2,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgentFormData } from '../types';
+import { LegalModal } from '../components/LegalModal';
+import { TermsContent } from './Terms';
+import { PrivacyContent } from './Privacy';
 
 export const AgentRegister: React.FC = () => {
   const navigate = useNavigate();
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  
   const [formData, setFormData] = useState<Partial<AgentFormData>>({
     registrationDate: new Date().toLocaleDateString('en-GB')
   });
@@ -16,6 +23,10 @@ export const AgentRegister: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreedToTerms) {
+      alert("Please agree to the Terms & Conditions and No-Refund Policy before proceeding.");
+      return;
+    }
     const code = `${formData.fullName?.split(' ')[0].toLowerCase() || 'agent'}-${Date.now().toString().slice(-4)}`;
     const finalData = { ...formData, agentCode: code };
     
@@ -61,11 +72,35 @@ export const AgentRegister: React.FC = () => {
 
           <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 space-y-4">
             <h3 className="font-bold text-[#003366]">Terms of Partnership</h3>
-            <ul className="text-sm text-slate-600 space-y-2">
+            <ul className="text-sm text-slate-600 space-y-2 text-black">
               <li>• A one-time registration fee of ₹300 + GST applies.</li>
               <li>• Agents will receive a unique code to tag candidates.</li>
               <li>• Incentives are processed monthly based on successful placements.</li>
             </ul>
+          </div>
+
+          <div className="bg-cyan-50 p-6 rounded-2xl border border-cyan-100">
+             <div className="flex items-start gap-3">
+               <input 
+                id="agent-terms-check"
+                type="checkbox" 
+                required 
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="w-5 h-5 mt-1 text-cyan-600 rounded cursor-pointer"
+               />
+               <label htmlFor="agent-terms-check" className="text-sm font-semibold text-[#003366] cursor-pointer">
+                 I agree to the <button 
+                   type="button"
+                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowTermsModal(true); }}
+                   className="underline hover:text-cyan-600 transition-colors"
+                 >Terms & Conditions</button>, <button 
+                   type="button"
+                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowPrivacyModal(true); }}
+                   className="underline hover:text-cyan-600 transition-colors"
+                 >Privacy Policy</button> and <span className="text-red-600">No-Refund Policy</span>.
+               </label>
+             </div>
           </div>
 
           <button type="submit" className="w-full bg-[#003366] hover:bg-blue-800 text-white py-5 rounded-2xl font-bold text-xl shadow-xl transition-all transform hover:-translate-y-1">
@@ -73,6 +108,23 @@ export const AgentRegister: React.FC = () => {
           </button>
         </form>
       </div>
+
+      {/* Legal Modals */}
+      <LegalModal 
+        isOpen={showTermsModal} 
+        onClose={() => setShowTermsModal(false)} 
+        title="Terms & Conditions"
+      >
+        <TermsContent />
+      </LegalModal>
+
+      <LegalModal 
+        isOpen={showPrivacyModal} 
+        onClose={() => setShowPrivacyModal(false)} 
+        title="Privacy Policy"
+      >
+        <PrivacyContent />
+      </LegalModal>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 export const BUSINESS_DETAILS = {
   name: 'Abhishek Placement & Career Counselling',
   gstin: '27FOHPD0571K1ZU',
-  address: 'AT POST KOLWAN TALUKA MULSHI, DIST. PUNE – 412 108',
+  address: 'Ground Floor, House No. 418, Jalidnar Dhamale, Kolwan–Paud Road (PUN MD 26), Near Hotel Abhishek, Kolwan, Mulshi, Pune – 412108, Maharashtra, India.',
   phone1: '+91 73784 65008',
   phone2: '+91 97631 19323',
   email: 'info@jobs-apcc.in',
