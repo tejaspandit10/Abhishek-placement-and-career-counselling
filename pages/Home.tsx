@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { SERVICES, TESTIMONIALS, PARTNERS } from '../constants';
+import { SERVICES, TESTIMONIALS, PARTNERS, BUSINESS_DETAILS } from '../constants';
 
 interface Review {
   id: string;
@@ -25,9 +25,9 @@ export const Home: React.FC = () => {
   });
 
   const [visibleCount, setVisibleCount] = useState(3);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Responsive visible count
     const updateCount = () => {
       if (window.innerWidth < 768) setVisibleCount(1);
       else if (window.innerWidth < 1024) setVisibleCount(2);
@@ -39,11 +39,18 @@ export const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Load reviews from constant + localStorage
     const savedReviews = localStorage.getItem('user_reviews');
     const parsedSaved = savedReviews ? JSON.parse(savedReviews) : [];
     setReviews([...TESTIMONIALS, ...parsedSaved]);
   }, []);
+
+  // Auto-play for reviews
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % reviews.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [reviews.length]);
 
   useEffect(() => {
     if (hash) {
@@ -53,8 +60,6 @@ export const Home: React.FC = () => {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       }
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [hash]);
 
@@ -72,7 +77,6 @@ export const Home: React.FC = () => {
     const updatedReviews = [...reviews, reviewToAdd];
     setReviews(updatedReviews);
     
-    // Persist user reviews specifically
     const savedReviews = localStorage.getItem('user_reviews');
     const parsedSaved = savedReviews ? JSON.parse(savedReviews) : [];
     localStorage.setItem('user_reviews', JSON.stringify([...parsedSaved, reviewToAdd]));
@@ -89,7 +93,6 @@ export const Home: React.FC = () => {
     setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
   };
 
-  // Logic to get circular slice of reviews
   const getVisibleReviews = () => {
     if (reviews.length === 0) return [];
     const items = [];
@@ -100,9 +103,24 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="space-y-24 pb-20">
+    <div className="pt-20 space-y-32 pb-20">
+      {/* Floating Contact Widget */}
+      <div className="fixed bottom-8 right-8 z-[60] flex flex-col items-end gap-3 no-print">
+         <div className="group relative">
+           <div className="bg-white p-4 rounded-2xl shadow-2xl border border-slate-100 mb-2 opacity-0 group-hover:opacity-100 transition-all pointer-events-none translate-y-4 group-hover:translate-y-0 min-w-[200px]">
+             <p className="font-bold text-[#003366] text-sm mb-1">Quick Contact</p>
+             <p className="text-xs text-slate-500 mb-2">How can we help you today?</p>
+             <a href={`tel:${BUSINESS_DETAILS.phone1}`} className="flex items-center gap-2 text-cyan-600 text-sm font-bold mb-2 pointer-events-auto">📞 Call Now</a>
+             <Link to="/contact" className="flex items-center gap-2 text-[#003366] text-sm font-bold pointer-events-auto">✉️ Send Message</Link>
+           </div>
+           <button className="bg-[#003366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:bg-blue-800 transition-all active:scale-90 ring-4 ring-blue-100">
+             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+           </button>
+         </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden bg-[#003366]">
+      <section className="relative h-[85vh] flex items-center overflow-hidden bg-[#003366]">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1920" 
@@ -123,7 +141,7 @@ export const Home: React.FC = () => {
                 to="/apply"
                 className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-lg font-bold text-center transition-all transform hover:scale-105 shadow-xl shadow-cyan-900/20"
               >
-                Apply Now / Fill Form
+                Apply Now
               </Link>
               <Link
                 to="/contact"
@@ -177,15 +195,15 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Testimonials Carousel */}
-      <section id="reviews" className="bg-[#003366] py-24 text-white scroll-mt-20 overflow-hidden">
+      <section id="reviews" className="bg-[#003366] py-32 text-white scroll-mt-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Candidates Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight">Real Success Stories</h2>
             <div className="w-24 h-1 bg-cyan-500 mx-auto"></div>
           </div>
           
           <div className="relative group">
-            <div className="flex items-center gap-6 overflow-hidden">
+            <div className="flex items-center gap-6 overflow-hidden min-h-[400px]">
               {/* Previous Arrow */}
               <button 
                 onClick={prevReview}
@@ -198,20 +216,22 @@ export const Home: React.FC = () => {
               </button>
 
               {/* Reviews Track */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full transition-all duration-500">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full transition-all duration-700 ease-in-out">
                 {getVisibleReviews().map((t, idx) => (
-                  <div key={`${t.id}-${idx}`} className="bg-blue-950/50 p-8 rounded-xl border border-blue-900 transition-all hover:bg-blue-900/40 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <div className="flex text-cyan-400 mb-4 text-lg">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className={i < t.rating ? 'text-cyan-400' : 'text-blue-900'}>★</span>
-                      ))}
+                  <div key={`${t.id}-${idx}`} className="bg-blue-950/50 p-8 rounded-xl border border-blue-900 transition-all hover:bg-blue-900/40 animate-in fade-in slide-in-from-right-8 duration-700 h-full flex flex-col justify-between">
+                    <div>
+                      <div className="flex text-cyan-400 mb-4 text-lg">
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} className={i < t.rating ? 'text-cyan-400' : 'text-blue-900'}>★</span>
+                        ))}
+                      </div>
+                      <p className="italic mb-6 text-blue-100 leading-relaxed text-sm">"{t.content}"</p>
                     </div>
-                    <p className="italic mb-6 text-blue-100 leading-relaxed min-h-[80px]">"{t.content}"</p>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 mt-auto">
                       <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full border-2 border-cyan-500 object-cover" />
                       <div>
-                        <p className="font-bold">{t.name}</p>
-                        <p className="text-sm text-blue-300">{t.role}</p>
+                        <p className="font-bold text-sm">{t.name}</p>
+                        <p className="text-[10px] text-blue-300 uppercase tracking-widest">{t.role}</p>
                       </div>
                     </div>
                   </div>
@@ -231,12 +251,12 @@ export const Home: React.FC = () => {
             </div>
             
             {/* Pagination Dots */}
-            <div className="flex justify-center gap-2 mt-8">
+            <div className="flex justify-center gap-2 mt-12">
               {reviews.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${i === currentIndex ? 'bg-cyan-500 w-8' : 'bg-blue-900 hover:bg-blue-800'}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'bg-cyan-500 w-8' : 'bg-blue-900 w-4 hover:bg-blue-800'}`}
                   aria-label={`Go to review ${i + 1}`}
                 />
               ))}
@@ -248,7 +268,7 @@ export const Home: React.FC = () => {
               onClick={() => setIsModalOpen(true)}
               className="inline-block border-2 border-cyan-500 bg-cyan-500/10 px-8 py-3 rounded-lg font-bold hover:bg-cyan-500 hover:text-white transition-all transform active:scale-95"
             >
-              Add Your Review
+              Share Your Story
             </button>
           </div>
         </div>
@@ -323,16 +343,16 @@ export const Home: React.FC = () => {
       )}
 
       {/* Final CTA */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-white p-16 rounded-3xl shadow-lg border border-slate-100">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#003366] mb-6">Ready to Transform Your Career?</h2>
-        <p className="text-lg text-slate-600 mb-10">
-          Join thousands of successful professionals who started their journey with Abhishek Placement.
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-white p-20 rounded-[3rem] shadow-xl border border-slate-100">
+        <h2 className="text-3xl md:text-5xl font-bold text-[#003366] mb-8 leading-tight">Ready to Transform Your Career?</h2>
+        <p className="text-lg text-slate-600 mb-12 max-w-2xl mx-auto">
+          Join thousands of successful professionals who started their journey with Abhishek Placement & Career Counselling.
         </p>
         <Link
           to="/apply"
-          className="inline-block bg-cyan-600 hover:bg-cyan-700 text-white px-10 py-4 rounded-xl font-bold text-xl shadow-lg hover:shadow-xl transition-all shadow-cyan-900/10"
+          className="inline-block bg-cyan-600 hover:bg-cyan-700 text-white px-12 py-5 rounded-2xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all shadow-cyan-900/10 active:scale-95"
         >
-          Get Started Now
+          Apply Now
         </Link>
       </section>
 

@@ -7,7 +7,7 @@ export const Contact: React.FC = () => {
   const embedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.910325374493!2d73.5356947!3d18.5329188!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc299003666b60b%3A0xe542617f6943c2c5!2sAbhishek%20Placement%20and%20Career%20Counselling!5e0!3m2!1sen!2sin!4v1709100000000!5m2!1sen!2sin";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="pt-24 max-w-7xl mx-auto px-4 py-20">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-[#003366] mb-4">Contact Us</h1>
         <p className="text-slate-600 max-w-2xl mx-auto">Have questions? We're here to help you navigate your career path. Reach out to our expert team.</p>

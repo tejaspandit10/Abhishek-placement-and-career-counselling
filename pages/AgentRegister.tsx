@@ -16,7 +16,6 @@ export const AgentRegister: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic for generating Agent Code: firstname-lastname + random
     const code = `${formData.fullName?.split(' ')[0].toLowerCase() || 'agent'}-${Date.now().toString().slice(-4)}`;
     const finalData = { ...formData, agentCode: code };
     
@@ -28,7 +27,7 @@ export const AgentRegister: React.FC = () => {
   const inputClass = "w-full p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none bg-white text-black transition-all";
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16">
+    <div className="pt-24 max-w-4xl mx-auto px-4 py-16">
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
         <div className="bg-gradient-to-r from-[#003366] to-[#004d99] p-10 text-white text-center">
           <h1 className="text-3xl font-bold mb-4">Become an APCC Agent</h1>

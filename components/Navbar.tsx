@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
@@ -8,10 +9,10 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
     { name: 'Services', path: '/#services' },
     { name: 'Partner with Us', path: '/agent-register' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Contact Us', path: '/contact' },
   ];
 
   const isActive = (path: string) => {
@@ -23,7 +24,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="glass-nav sticky top-0 z-50 border-b border-slate-200 no-print">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 no-print shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
@@ -97,4 +98,3 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
-export default Navbar;

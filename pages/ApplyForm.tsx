@@ -57,7 +57,7 @@ export const ApplyForm: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <div className="pt-24 max-w-5xl mx-auto px-4 py-12">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
         <div className="bg-[#003366] p-8 text-white text-center">
           <h1 className="text-3xl font-bold mb-2">Registration & Career Goal Questionnaire</h1>
@@ -115,7 +115,6 @@ export const ApplyForm: React.FC = () => {
                 <label className={labelClass}>Email ID (ईमेल आयडी)*</label>
                 <input required type="email" name="email" onChange={handleInputChange} className={inputClass} />
               </div>
-              {/* Added Aadhaar Field for Authenticity */}
               <div>
                 <label className={labelClass}>Aadhaar Number (आधार कार्ड क्रमांक)*</label>
                 <input 
@@ -337,9 +336,9 @@ export const ApplyForm: React.FC = () => {
           </section>
 
           <div className="flex flex-col items-center gap-4 pt-8 border-t">
-            <p className="text-xs text-slate-500 font-medium">Review all details carefully before proceeding to payment.</p>
+            <p className="text-xs text-slate-500 font-medium">Review all details carefully before proceeding.</p>
             <button type="submit" className="bg-cyan-600 hover:bg-cyan-700 text-white px-16 py-5 rounded-xl font-black text-xl shadow-2xl transition-all transform hover:scale-105 active:scale-95 shadow-cyan-900/20">
-              SUBMIT & PAY REGISTRATION FEE (₹236)
+              PROCEED
             </button>
           </div>
         </form>
