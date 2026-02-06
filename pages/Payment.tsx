@@ -42,11 +42,13 @@ export const Payment: React.FC = () => {
         })
       });
 
-      const order = await orderRes.json();
+const order = await orderRes.json();
 
 if (!order?.id) {
   throw new Error("Order creation failed");
 }
+
+console.log("Razorpay order:", order);
 
       const options = {
         key: "rzp_live_SCmfJVKrLRgWdS", // frontend key
