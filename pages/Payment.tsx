@@ -62,7 +62,7 @@ export const Payment: React.FC = () => {
       const order = data.order;
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // frontend key
+        key: "rzp_live_SCmfJVKrLRgWdS", // frontend key
         amount: order.amount,
         currency: order.currency,
         name: "Abhishek Placement & Career Counselling",
