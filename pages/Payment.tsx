@@ -41,13 +41,11 @@ export const Payment: React.FC = () => {
         })
       });
 
-      const data = await orderRes.json();
+      const order = await orderRes.json();
 
-      if (!data?.success) {
-        throw new Error("Order creation failed");
-      }
-
-      const order = data.order;
+if (!order?.id) {
+  throw new Error("Order creation failed");
+}
 
       const options = {
         key: "rzp_live_SCmfJVKrLRgWdS", // frontend key
