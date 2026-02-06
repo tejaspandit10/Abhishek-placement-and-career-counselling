@@ -21,6 +21,7 @@ export const Payment: React.FC = () => {
   const totalAmount = baseAmount + gstAmount;
 
   const handlePay = async () => {
+     console.log("PAY CLICKED");
     setLoading(true);
 
     if (!window.Razorpay) {
