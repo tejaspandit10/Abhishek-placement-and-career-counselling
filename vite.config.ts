@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
 
   return {
-    base: env.VITE_BASE_PATH || '/',   // ✅ ADD THIS LINE
+    base: './',   // ✅ THIS LINE FIXES CUSTOM DOMAIN BLANK PAGE
 
     server: {
       port: 3000,
