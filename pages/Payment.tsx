@@ -20,26 +20,14 @@ export const Payment: React.FC = () => {
   const gstAmount = baseAmount * 0.18;
   const totalAmount = baseAmount + gstAmount;
 
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
-
   const handlePay = async () => {
     setLoading(true);
 
-    const res = await loadRazorpay();
-
-    if (!res) {
-      alert("Razorpay SDK failed to load.");
-      setLoading(false);
-      return;
-    }
+    if (!window.Razorpay) {
+  alert("Razorpay SDK not loaded");
+  setLoading(false);
+  return;
+}
 
     try {
       // 1. Create order from backend
