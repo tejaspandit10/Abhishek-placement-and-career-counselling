@@ -1,149 +1,90 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
+import { Navbar } from "../components/Navbar";
+import { Logo } from "../components/Logo";
 
-const BACKEND_URL = "https://razorpay-backend-1-aeoq.onrender.com";
-const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
+import { Home } from "./Home";
+import { ApplyForm } from "./ApplyForm";
+import { Payment } from "./Payment";
+import { Confirmation } from "./Confirmation";
+import { Contact } from "./Contact";
+import { AdminDashboard } from "./AdminDashboard";
+import { TermsPage } from "./Terms";
+import { PrivacyPage } from "./Privacy";
 
-export const Payment: React.FC = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+import { BUSINESS_DETAILS } from "../constants";
 
-  const context = localStorage.getItem("payment_context") || "candidate";
-  const baseAmount = context === "agent" ? 300 : 200;
-  const gstAmount = baseAmount * 0.18;
-  const totalAmount = baseAmount + gstAmount;
+/* ---------------- Scroll + Route Debug ---------------- */
+const ScrollToTopAndDebug = () => {
+  const location = useLocation();
 
-  // 🔹 Wake Render backend (free plan fix)
   useEffect(() => {
-    fetch(BACKEND_URL).catch(() => {});
-  }, []);
+    console.log("🔁 ROUTE CHANGED TO:", location.pathname);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
-  const ensureRazorpayLoaded = () => {
-    return new Promise<boolean>((resolve) => {
-      if (window.Razorpay) return resolve(true);
+  return null;
+};
 
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
+/* ---------------- About ---------------- */
+const AboutPage = () => (
+  <div className="pt-32 max-w-5xl mx-auto py-20 px-4">
+    <h1 className="text-4xl font-bold text-center">About APCC</h1>
+  </div>
+);
 
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
+/* ---------------- Services ---------------- */
+const ServicesPage = () => (
+  <div className="pt-32 max-w-5xl mx-auto py-20 px-4">
+    <h1 className="text-4xl font-bold text-center">Services</h1>
+  </div>
+);
 
-      document.body.appendChild(script);
-    });
-  };
-
-  const handlePay = async () => {
-    console.log("✅ Pay button clicked");
-
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      if (!RAZORPAY_KEY_ID) {
-        throw new Error("Razorpay Key missing (check VITE env)");
-      }
-
-      const sdkLoaded = await ensureRazorpayLoaded();
-      if (!sdkLoaded || !window.Razorpay) {
-        throw new Error("Razorpay SDK failed to load");
-      }
-
-      console.log("📡 Creating order...");
-
-      const orderRes = await fetch(`${BACKEND_URL}/create-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount }),
-      });
-
-      const order = await orderRes.json();
-      console.log("📦 Order response:", order);
-
-      if (!order?.id) {
-        throw new Error("Order creation failed");
-      }
-
-      const options = {
-        key: RAZORPAY_KEY_ID,
-        amount: order.amount,
-        currency: "INR",
-        name: "Abhishek Placement",
-        description:
-          context === "agent"
-            ? "Agent Registration"
-            : "Candidate Registration",
-        order_id: order.id,
-        handler: async (response: any) => {
-          console.log("💰 Payment success:", response);
-
-          const verifyRes = await fetch(`${BACKEND_URL}/verify-payment`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(response),
-          });
-
-          const verifyData = await verifyRes.json();
-
-          if (verifyData.success) {
-            localStorage.setItem(
-              "txn_id",
-              response.razorpay_payment_id
-            );
-            navigate("/confirmation");
-          } else {
-            alert("Payment verification failed");
-          }
-
-          setLoading(false);
-        },
-        modal: {
-          ondismiss: () => {
-            console.log("❌ Payment cancelled");
-            setLoading(false);
-          },
-        },
-        theme: { color: "#003366" },
-      };
-
-      console.log("🚀 Opening Razorpay checkout");
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (err: any) {
-      console.error("❌ Payment Error:", err.message);
-      alert(err.message || "Something went wrong");
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="max-w-xl mx-auto px-4 py-20">
-      <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-        <div className="p-8 bg-[#003366] text-white text-center">
-          <h2 className="text-2xl font-bold">Registration Fee</h2>
-          <p className="text-cyan-200 mt-2">
-            ₹{totalAmount.toFixed(2)} (Incl. GST)
-          </p>
-        </div>
-
-        <div className="p-8">
-          {/* 🔥 IMPORTANT: type="button" */}
-          <button
-            type="button"
-            onClick={handlePay}
-            disabled={loading}
-            className="w-full bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white py-4 rounded-xl font-bold shadow-lg transition-all"
-          >
-            {loading ? "Initializing..." : "Proceed to Secure Payment"}
-          </button>
-        </div>
-      </div>
+/* ---------------- Footer ---------------- */
+const Footer = () => (
+  <footer className="bg-blue-950 text-blue-100 py-20">
+    <div className="max-w-7xl mx-auto px-4">
+      <Logo light className="h-14 mb-8" hideText={false} />
+      <p className="text-sm">{BUSINESS_DETAILS.address}</p>
     </div>
+  </footer>
+);
+
+/* ---------------- App ---------------- */
+const App: React.FC = () => {
+  return (
+    <Router>
+      <ScrollToTopAndDebug />
+
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/apply" element={<ApplyForm />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
+    </Router>
   );
 };
+
+export default App;
