@@ -75,7 +75,7 @@ export const Payment: React.FC = () => {
           const verifyData = await verifyRes.json();
           if (verifyData.success) {
             localStorage.setItem("txn_id", response.razorpay_payment_id);
-            navigate("/confirmation");
+           // navigate("/confirmation");
           } else {
             alert("Verification failed");
           }
