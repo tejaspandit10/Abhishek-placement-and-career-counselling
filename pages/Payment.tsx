@@ -86,7 +86,8 @@ export const Payment: React.FC = () => {
         },
         theme: { color: "#003366" },
       };
-
+      console.log("RAZORPAY KEY:", RAZORPAY_KEY_ID);
+      console.log("OPTIONS:", options);
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err: any) {
