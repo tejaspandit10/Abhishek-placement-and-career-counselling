@@ -98,24 +98,32 @@ export const Payment: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-20">
-      <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-        <div className="p-8 bg-[#003366] text-white text-center">
-          <h2 className="text-2xl font-bold">Registration Fee</h2>
-          <p className="text-cyan-200 mt-2">
-            ₹{totalAmount.toFixed(2)} (Incl. GST)
-          </p>
-        </div>
-        <div className="p-8">
-          <button
-            onClick={handlePay}
-            disabled={loading}
-            className="w-full bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white py-4 rounded-xl font-bold shadow-lg transition-all"
-          >
-            {loading ? "Initializing..." : "Proceed to Secure Payment"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  <div
+    style={{
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "red",
+      zIndex: 999999,
+    }}
+  >
+    <button
+      type="button"
+      onClick={() => {
+        alert("CLICK WORKS");
+        console.log("CLICK WORKS");
+      }}
+      style={{
+        padding: "30px",
+        fontSize: "20px",
+        background: "black",
+        color: "white",
+      }}
+    >
+      TEST CLICK
+    </button>
+  </div>
+);
+
 };
