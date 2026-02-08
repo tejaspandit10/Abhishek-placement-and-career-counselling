@@ -109,20 +109,18 @@ export const Payment: React.FC = () => {
     }}
   >
     <button
-      type="button"
-      onClick={() => {
-        alert("CLICK WORKS");
-        console.log("CLICK WORKS");
-      }}
-      style={{
-        padding: "30px",
-        fontSize: "20px",
-        background: "black",
-        color: "white",
-      }}
-    >
-      TEST CLICK
-    </button>
+  type="button"
+  onClick={handlePay}
+  style={{
+    padding: "30px",
+    fontSize: "20px",
+    background: "black",
+    color: "white",
+  }}
+>
+  PAY NOW
+</button>
+
   </div>
 );
 
