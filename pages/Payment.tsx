@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+console.error("🔥🔥🔥 PAYMENT FILE LOADED 🔥🔥🔥");
 declare global {
   interface Window {
     Razorpay: any;
